@@ -257,6 +257,9 @@ h4{font-family:var(--font-display);font-variation-settings:"wdth" 104,"wght" 600
 .proj-body{display:grid;gap:14px;align-content:start}
 .proj-meta{color:var(--gold);font-weight:500;margin-top:-8px}
 .fig-note{color:var(--fr4);font-size:.84rem;margin-top:10px}
+.proj[data-report]{cursor:pointer;transition:border-color .3s,opacity .8s var(--ease),transform .9s var(--ease)}
+.proj[data-report]:hover{border-color:rgba(79,224,196,.45)}
+.proj-report{justify-self:start;margin-top:4px}
 @media (max-width:860px){.proj{grid-template-columns:1fr}.proj.flip .proj-vis{order:0}}
 
 .demo text{font-family:var(--font-body);fill:var(--fr4);font-size:12.5px}
@@ -383,6 +386,10 @@ html.cv-lock{overflow:hidden}
 .cv-btn:disabled{opacity:.4;cursor:not-allowed}
 .cv-btn .ico{width:19px;height:19px}
 .cv-close{flex:none}
+.cv-group[hidden]{display:none}
+.cv-pnum{width:3.4em;height:40px;padding:0 6px;border-radius:10px;border:1px solid var(--line);background:rgba(5,21,26,.62);text-align:center;font-variant-numeric:tabular-nums}
+.cv-pnum:focus{outline:none;border-color:var(--signal);box-shadow:0 0 0 3px rgba(79,224,196,.16)}
+.cv-of{min-width:3.6em;color:var(--fr4);font-size:.9rem;font-variant-numeric:tabular-nums}
 .cv-zoom{min-width:56px;text-align:center;color:var(--fr4);font-size:.9rem;font-variant-numeric:tabular-nums}
 .cv-dl{height:40px}
 .cv-stage{position:relative;flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;background:radial-gradient(circle at 50% 0,rgba(79,224,196,.07),transparent 60%),rgba(2,12,15,.6)}
@@ -402,6 +409,15 @@ html.cv-lock{overflow:hidden}
   .cv-bar{padding:0 10px 12px 16px}
   .cv-lbl{display:none}
   .cv-pages{gap:12px;padding:12px}
+  .cv-head{gap:10px;padding:10px 8px 8px 14px}
+  .cv-head h2{font-size:1rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .cv-head p{font-size:.8rem;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cv-bar{gap:6px;padding:0 8px 8px 14px}
+  .cv-group{gap:4px}
+  .cv-btn,.cv-dl,.cv-pnum{height:36px;min-width:36px}
+  .cv-btn{padding:0 8px}
+  .cv-zoom{min-width:44px;font-size:.84rem}
+  .cv-of{min-width:0;font-size:.84rem}
 }
 
 /* contact */
@@ -486,6 +502,9 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
   <symbol id="i-fit" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 12h6"/></symbol>
   <symbol id="i-full" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
   <symbol id="i-unfull" viewBox="0 0 24 24"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
   <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
 </svg>
 
@@ -706,7 +725,7 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
       <p class="sec-sub">Two builds in progress at Spacemancraft and one academic design. The first one is live: send it a command.</p>
     </header>
 
-    <article class="proj glass" id="project-motor" data-reveal>
+    <article class="proj glass" id="project-motor" data-reveal data-report="motor-controller">
       <div class="proj-vis">
         <svg class="demo" id="demo" data-state="off" viewBox="0 10 560 186" role="img" aria-label="A phone sends a command over the GSM network to the controller, which switches the borewell motor">
           <path class="link" id="demo-path" d="M57 58 C 90 8, 180 8, 208 66 C 240 10, 300 10, 322 44"/>
@@ -759,6 +778,7 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
         </ul>
         <h4 class="vh">Technologies</h4>
         <ul class="chips"><li class="chip">SIM800L 2G modem</li><li class="chip">Call and SMS control</li><li class="chip">KiCad</li><li class="chip">Schematic and PCB design</li><li class="chip">BOM</li></ul>
+        <button class="btn btn-glass btn-sm proj-report" type="button" data-report-open aria-haspopup="dialog"><svg class="ico" aria-hidden="true"><use href="#i-doc"/></svg>Read the engineering report</button>
       </div>
     </article>
 
@@ -984,12 +1004,18 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
         <button class="cv-btn" type="button" id="cv-in" aria-label="Zoom in"><svg class="ico" aria-hidden="true"><use href="#i-zin"/></svg></button>
         <button class="cv-btn" type="button" id="cv-fit" aria-label="Fit to screen"><svg class="ico" aria-hidden="true"><use href="#i-fit"/></svg><span class="cv-lbl">Fit to screen</span></button>
       </div>
+      <div class="cv-group" id="cv-nav" hidden>
+        <button class="cv-btn" type="button" id="cv-prev" aria-label="Previous page"><svg class="ico" aria-hidden="true"><use href="#i-prev"/></svg></button>
+        <input class="cv-pnum" id="cv-page" type="text" inputmode="numeric" autocomplete="off" value="1" aria-label="Page number">
+        <span class="cv-of" id="cv-of">of 1</span>
+        <button class="cv-btn" type="button" id="cv-next" aria-label="Next page"><svg class="ico" aria-hidden="true"><use href="#i-next"/></svg></button>
+      </div>
       <div class="cv-group">
         <button class="cv-btn" type="button" id="cv-full" aria-pressed="false" aria-label="Full screen"><svg class="ico" aria-hidden="true"><use href="#i-full" id="cv-full-ico"/></svg><span class="cv-lbl" id="cv-full-lbl">Full screen</span></button>
         <a class="btn btn-primary btn-sm cv-dl" id="cv-dl" href="certificates/" download><svg class="ico" aria-hidden="true"><use href="#i-down"/></svg>Download</a>
       </div>
     </div>
-    <div class="cv-stage" id="cv-stage" tabindex="0" aria-label="Certificate preview">
+    <div class="cv-stage" id="cv-stage" tabindex="0" aria-label="Document preview">
       <div class="cv-pages" id="cv-pages"></div>
       <div class="cv-state" id="cv-state" role="status" hidden></div>
     </div>
@@ -1017,6 +1043,15 @@ const CERTIFICATES = {
   'python':    { title: 'Introduction and OOPS in Python', issuer: 'Infosys Springboard', file: 'certificates/python-certificate.pdf' },
   'azure-sql': { title: 'SQL', issuer: 'Microsoft Azure, Coursera', file: 'certificates/microsoft-azure-sql.pdf' },
   'ai-tcsion': { title: 'AI for Real World Application', issuer: 'TCS iON', file: 'certificates/ai-tcsion.pdf' }
+};
+// Project reports: the project card with a matching data-report value opens its PDF.
+const REPORTS = {
+  'motor-controller': {
+    kind: 'report', fit: 'width', pageNav: true,
+    title: 'Design and Development of an SMS and Call Based Bore Motor Controller',
+    issuer: 'Engineering report for the IoT Motor Controller project',
+    file: 'public/reports/Bore_Motor_Controller_Engineering_Report.pdf'
+  }
 };
 // PDF.js is self-hosted (no CDN), loaded only when a certificate is first opened.
 const PDFJS = { lib: 'vendor/pdfjs/pdf.min.js', worker: 'vendor/pdfjs/pdf.worker.min.js', wasm: 'vendor/pdfjs/wasm/' };
@@ -1363,11 +1398,14 @@ function initCertificates() {
   const panel = $('#cv-panel'), stage = $('#cv-stage'), pagesEl = $('#cv-pages'), stateEl = $('#cv-state');
   const zoomOut = $('#cv-out'), zoomIn = $('#cv-in'), zoomEl = $('#cv-zoom'), fitBtn = $('#cv-fit');
   const fullBtn = $('#cv-full'), fullIco = $('#cv-full-ico'), fullLbl = $('#cv-full-lbl'), dlBtn = $('#cv-dl');
+  const navEl = $('#cv-nav'), prevBtn = $('#cv-prev'), nextBtn = $('#cv-next'), pageInput = $('#cv-page'), ofEl = $('#cv-of');
   const STEPS = [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 4];   // multiples of "fit to screen"
   const PT = 96 / 72;                                      // CSS px per PDF point (100% = actual size)
   const MAX_PIXELS = 16e6;                                 // canvas size limit on mobile browsers
   let lib = null, libLoading = null, doc = null, loading = null, pages = [], slots = [], tasks = [];
   let cert = null, zoom = 1, loadToken = 0, renderToken = 0, renderTimer = 0, lastFocus = null, downOnBackdrop = false;
+  let drawnAt = [], current = 1, scrollRaf = 0;
+  const docKind = () => (cert && cert.kind) || 'certificate';
   const files = window.claude && typeof window.claude.use === 'function' ? window.claude.use('downloads').catch(() => null) : null;
 
   // free the open document (PDF.js 4+ releases it through its loading task)
@@ -1390,15 +1428,15 @@ function initCertificates() {
   function showState(kind) {
     if (!kind) { stateEl.hidden = true; stateEl.innerHTML = ''; return; }
     const html = {
-      loading: '<span class="cv-spin" aria-hidden="true"></span><p>Loading certificate</p>',
-      missing: `<p>This certificate could not be found. Email ${EMAIL} and I will send you a copy.</p>`
+      loading: `<span class="cv-spin" aria-hidden="true"></span><p>Loading ${docKind()}</p>`,
+      missing: `<p>This ${docKind()} could not be found. Email ${EMAIL} and I will send you a copy.</p>`
     }[kind];
     stateEl.innerHTML = html; stateEl.hidden = false;
   }
 
   function setControls(ready) {
-    [zoomOut, zoomIn, fitBtn].forEach(b => { b.disabled = !ready; });
-    if (ready) { zoomOut.disabled = zoom <= STEPS[0]; zoomIn.disabled = zoom >= STEPS[STEPS.length - 1]; }
+    [zoomOut, zoomIn, fitBtn, prevBtn, nextBtn, pageInput].forEach(b => { b.disabled = !ready; });
+    if (ready) { zoomOut.disabled = zoom <= STEPS[0]; zoomIn.disabled = zoom >= STEPS[STEPS.length - 1]; setPage(current); }
   }
 
   // Scale that fits the largest page inside the stage, then the user's zoom on top.
@@ -1407,7 +1445,8 @@ function initCertificates() {
     const w = Math.max(160, stage.clientWidth - pad), h = Math.max(160, stage.clientHeight - pad);
     const sizes = pages.map(p => p.getViewport({ scale: 1 }));
     const pw = Math.max(...sizes.map(v => v.width)), ph = Math.max(...sizes.map(v => v.height));
-    return Math.min(w / pw, h / ph) * zoom;
+    const fit = cert && cert.fit === 'width' ? Math.min(w / pw, 1.5 * PT) : Math.min(w / pw, h / ph);
+    return fit * zoom;
   }
 
   function sizeSlots(s) {
@@ -1420,12 +1459,24 @@ function initCertificates() {
     setControls(true);
   }
 
-  // Draw every page at screen resolution (device pixel ratio), so text stays sharp at any zoom.
+  // Pages within `screens` screen-heights of the view.
+  function pagesNear(screens) {
+    const top = stage.scrollTop - stage.clientHeight * screens, bottom = stage.scrollTop + stage.clientHeight * (1 + screens);
+    const out = [];
+    slots.forEach((el, i) => { if (el.offsetTop + el.offsetHeight >= top && el.offsetTop <= bottom) out.push(i); });
+    return out;
+  }
+
+  // Draw the pages near the view at screen resolution (device pixel ratio), so text stays sharp at any zoom.
+  // Pages far away are dropped, so long reports stay light on phones.
   async function render() {
     if (!pages.length) return;
     const token = ++renderToken, s = scale();
     sizeSlots(s);
-    for (let i = 0; i < pages.length; i++) {
+    const keep = new Set(pagesNear(3));
+    slots.forEach((el, i) => { if (!keep.has(i) && drawnAt[i]) { if (tasks[i]) tasks[i].cancel(); el.replaceChildren(); drawnAt[i] = 0; } });
+    const todo = pagesNear(1).filter(i => drawnAt[i] !== s).sort((a, b) => Math.abs(a + 1 - current) - Math.abs(b + 1 - current));
+    for (const i of todo) {
       const v = pages[i].getViewport({ scale: s });
       let ratio = Math.max(1, Math.min(window.devicePixelRatio || 1, 3));
       if (v.width * v.height * ratio * ratio > MAX_PIXELS) ratio = Math.sqrt(MAX_PIXELS / (v.width * v.height));
@@ -1439,7 +1490,31 @@ function initCertificates() {
       catch (err) { if (err && err.name === 'RenderingCancelledException') return; throw err; }
       if (token !== renderToken) return;
       slots[i].replaceChildren(c);
+      drawnAt[i] = s;
     }
+  }
+
+  // page navigation
+  function setPage(n) {
+    current = n;
+    if (document.activeElement !== pageInput) pageInput.value = n;
+    if (slots.length) { prevBtn.disabled = n <= 1; nextBtn.disabled = n >= slots.length; }
+  }
+  function trackPage() {
+    if (!slots.length) return;
+    const y = stage.scrollTop + stage.clientHeight * 0.3;
+    let n = 1;
+    slots.forEach((el, i) => { if (el.offsetTop <= y) n = i + 1; });
+    if (stage.scrollTop > 0 && stage.scrollTop + stage.clientHeight >= stage.scrollHeight - 2) n = slots.length;
+    if (n !== current || document.activeElement !== pageInput) setPage(n);
+  }
+  function goTo(n) {
+    if (!slots.length) return;
+    n = Math.min(slots.length, Math.max(1, n || 1));
+    const far = Math.abs(n - current) > 2;
+    stage.scrollTo({ top: Math.max(0, slots[n - 1].offsetTop - 12), behavior: far || reduce ? 'auto' : 'smooth' });
+    setPage(n);
+    scheduleRender(far ? 0 : 140);
   }
   const scheduleRender = (wait = 140) => { clearTimeout(renderTimer); renderTimer = setTimeout(() => render().catch(fail), wait); };
 
@@ -1451,6 +1526,7 @@ function initCertificates() {
     const fx = (stage.scrollLeft + stage.clientWidth / 2) / Math.max(1, stage.scrollWidth);
     const fy = (stage.scrollTop + stage.clientHeight / 2) / Math.max(1, stage.scrollHeight);
     zoom = next;
+    drawnAt = [];
     sizeSlots(scale());                      // instant feedback: stretch the current drawing
     stage.scrollLeft = fx * stage.scrollWidth - stage.clientWidth / 2;
     stage.scrollTop = fy * stage.scrollHeight - stage.clientHeight / 2;
@@ -1459,7 +1535,8 @@ function initCertificates() {
   const stepZoom = dir => setZoom(dir > 0 ? (STEPS.find(z => z > zoom + 1e-6) || zoom) : ([...STEPS].reverse().find(z => z < zoom - 1e-6) || zoom));
 
   function fail(err) {
-    console.error('Certificate viewer:', cert && cert.file, err);
+    console.error('Document viewer:', cert && cert.file, err);
+    navEl.hidden = true;
     pagesEl.innerHTML = ''; pages = []; setControls(false);
     const missing = err && (err.name === 'MissingPDFException' || err.status === 404 || /missing|404/i.test(err.message || ''));
     if (missing) showState('missing'); else embed();
@@ -1475,13 +1552,14 @@ function initCertificates() {
   }
 
   async function open(key) {
-    const c = CERTIFICATES[key]; if (!c) return;
-    cert = c; zoom = 1;
+    const c = CERTIFICATES[key] || REPORTS[key]; if (!c) return;
+    cert = c; zoom = 1; current = 1; drawnAt = [];
     const token = ++loadToken;
     $('#cv-title').textContent = c.title;
     $('#cv-issuer').textContent = c.issuer;
     dlBtn.href = c.file; dlBtn.setAttribute('download', c.file.split('/').pop());
-    dlBtn.setAttribute('aria-label', `Download certificate: ${c.title}`);
+    dlBtn.setAttribute('aria-label', `Download ${docKind()}: ${c.title}`);
+    navEl.hidden = !c.pageNav; pageInput.value = 1; ofEl.textContent = 'of 1';
     zoomEl.textContent = '100%'; setControls(false);
     pagesEl.innerHTML = ''; pagesEl.classList.remove('embed'); pages = []; slots = []; tasks = [];
     release();
@@ -1502,6 +1580,7 @@ function initCertificates() {
       for (let i = 1; i <= d.numPages; i++) pages.push(await d.getPage(i));
       if (token !== loadToken) return;
       slots = pages.map(() => { const el = document.createElement('div'); el.className = 'cv-page'; pagesEl.appendChild(el); return el; });
+      ofEl.textContent = `of ${pages.length}`;
       showState(null);
       await render();
     } catch (err) { if (token === loadToken) fail(err); }
@@ -1532,14 +1611,14 @@ function initCertificates() {
     if (!files || !cert) return;               // own website: the plain download link handles it
     e.preventDefault();
     const dl = await files;
-    if (!dl) { toast('Downloads are not available here. Use "Open the PDF in a new tab" instead.'); return; }
+    if (!dl) { toast('Downloads are not available here.'); return; }
     try {
       const res = await fetch(cert.file); if (!res.ok) throw new Error('missing');
       await dl.save({ filename: cert.file.split('/').pop(), data: await res.blob() });
-      toast('Certificate saved.');
+      toast(docKind() === 'report' ? 'Report saved.' : 'Certificate saved.');
     } catch (err) {
       if (err && err.code === 'declined') return;
-      toast(err && err.code === 'rate_limited' ? 'A save prompt is already open. Answer that one first.' : 'The certificate could not be downloaded here.');
+      toast(err && err.code === 'rate_limited' ? 'A save prompt is already open. Answer that one first.' : `The ${docKind()} could not be downloaded here.`);
     }
   }
 
@@ -1548,11 +1627,37 @@ function initCertificates() {
     btn.addEventListener('click', () => open(btn.dataset.cert));
     ['pointerenter', 'focus'].forEach(ev => btn.addEventListener(ev, () => { loadPdfJs().catch(() => {}); }, { once: true }));
   });
+  // project cards: a click anywhere on the card opens its report, except on the card's own controls
+  $$('[data-report]').forEach(card => {
+    card.addEventListener('click', e => {
+      const control = e.target.closest('button,a,input,select,textarea,label');
+      if (control && !control.hasAttribute('data-report-open')) return;
+      if (!control && String(window.getSelection ? getSelection() : '').trim()) return;   // visitor is selecting text
+      open(card.dataset.report);
+    });
+    card.addEventListener('pointerenter', () => { loadPdfJs().catch(() => {}); }, { once: true });
+  });
 
   // controls
   zoomIn.addEventListener('click', () => stepZoom(1));
   zoomOut.addEventListener('click', () => stepZoom(-1));
-  fitBtn.addEventListener('click', () => { zoom = 1; stage.scrollTop = 0; stage.scrollLeft = 0; render().catch(fail); });
+  fitBtn.addEventListener('click', () => {
+    const n = current; zoom = 1; drawnAt = [];
+    sizeSlots(scale());
+    stage.scrollLeft = 0; stage.scrollTop = n > 1 && slots[n - 1] ? slots[n - 1].offsetTop - 12 : 0;
+    render().catch(fail);
+  });
+  prevBtn.addEventListener('click', () => goTo(current - 1));
+  nextBtn.addEventListener('click', () => goTo(current + 1));
+  pageInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); goTo(parseInt(pageInput.value, 10)); } });
+  pageInput.addEventListener('change', () => goTo(parseInt(pageInput.value, 10)));
+  pageInput.addEventListener('blur', () => { pageInput.value = current; });
+  pageInput.addEventListener('focus', () => pageInput.select());
+  stage.addEventListener('scroll', () => {
+    if (!pages.length) return;
+    if (!scrollRaf) scrollRaf = requestAnimationFrame(() => { scrollRaf = 0; trackPage(); });
+    scheduleRender(90);
+  }, { passive: true });
   fullBtn.addEventListener('click', toggleFull);
   dlBtn.addEventListener('click', download);
   $('#cv-close').addEventListener('click', () => dlg.close());
@@ -1576,7 +1681,7 @@ function initCertificates() {
     if (Math.abs(e.deltaY) > 2) stepZoom(e.deltaY < 0 ? 1 : -1);
   }, { passive: false });
 
-  addEventListener('resize', () => { if (dlg.open && pages.length) scheduleRender(200); });
+  addEventListener('resize', () => { if (dlg.open && pages.length) { drawnAt = []; scheduleRender(200); } });
 
   dlg.addEventListener('close', () => {
     loadToken++; renderToken++; clearTimeout(renderTimer);
@@ -1584,7 +1689,7 @@ function initCertificates() {
     if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
     dlg.classList.remove('max'); syncFull();
     release();
-    pages = []; slots = []; tasks = []; pagesEl.innerHTML = ''; pagesEl.classList.remove('embed'); showState(null);
+    pages = []; slots = []; tasks = []; drawnAt = []; pagesEl.innerHTML = ''; pagesEl.classList.remove('embed'); showState(null);
     document.documentElement.classList.remove('cv-lock');
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   });
