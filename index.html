@@ -247,6 +247,7 @@ h4{font-family:var(--font-display);font-variation-settings:"wdth" 104,"wght" 600
 .xp-proj:hover{border-color:rgba(242,164,92,.5);transform:translateY(-4px)}
 .xp-link{justify-self:start;color:var(--signal);font-weight:500;text-underline-offset:4px}
 .xp > .pts{margin-top:18px}
+.xp-cert{justify-self:start;margin-top:20px}
 
 /* projects */
 .proj{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3.4vw,44px);align-items:center;padding:clamp(16px,2.6vw,30px);border-radius:var(--r-lg);scroll-margin-top:100px}
@@ -696,6 +697,7 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
         <li>Completed IoT training covering Linux basics, Raspberry Pi fundamentals and GPIO interfacing.</li>
         <li>Interfaced LED, potentiometer, LCD, pushbutton and DHT11 sensor; built remote monitoring and control with Blynk IoT virtual gauges.</li>
       </ul>
+      <button class="btn btn-glass btn-sm xp-cert" type="button" data-cert="iot-internship" aria-haspopup="dialog"><svg class="ico" aria-hidden="true"><use href="#i-eye"/></svg>View Internship Certificate</button>
     </article>
   </section>
 
@@ -1016,7 +1018,8 @@ const CERTIFICATES = {
   'pcb-kicad': { title: 'PCB Design using KiCad, Prototype Development and Fabrication', issuer: 'Panimalar Engineering College', file: 'certificates/pcb-kicad.pdf' },
   'python':    { title: 'Introduction and OOPS in Python', issuer: 'Infosys Springboard', file: 'certificates/python-certificate.pdf' },
   'azure-sql': { title: 'SQL', issuer: 'Microsoft Azure, Coursera', file: 'certificates/microsoft-azure-sql.pdf' },
-  'ai-tcsion': { title: 'AI for Real World Application', issuer: 'TCS iON', file: 'certificates/ai-tcsion.pdf' }
+  'ai-tcsion': { title: 'AI for Real World Application', issuer: 'TCS iON', file: 'certificates/ai-tcsion.pdf' },
+  'iot-internship': { title: 'IoT Training Internship', issuer: 'Keltron Knowledge Center, Trivandrum', file: 'certificates/iot-internship-keltron.pdf' }
 };
 // PDF.js is self-hosted (no CDN), loaded only when a certificate is first opened.
 const PDFJS = { lib: 'vendor/pdfjs/pdf.min.js', worker: 'vendor/pdfjs/pdf.worker.min.js', wasm: 'vendor/pdfjs/wasm/' };
