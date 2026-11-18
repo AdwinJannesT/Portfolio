@@ -103,7 +103,7 @@ button{cursor:pointer}
 .nav-toggle .x{display:none}
 .nav-toggle[aria-expanded="true"] .x{display:block}
 .nav-toggle[aria-expanded="true"] .m{display:none}
-@media (max-width:1060px){
+@media (max-width:1240px){
   .nav-toggle{display:inline-flex}
   .nav-cta{margin-left:auto}
   .nav-links{position:absolute;top:calc(100% + 8px);left:0;right:0;margin:0;flex-direction:column;gap:2px;padding:10px;border-radius:16px;border:1px solid var(--line);background:rgba(8,30,37,.97);box-shadow:0 30px 60px -20px #000;opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .25s,transform .25s var(--ease),visibility .25s}
@@ -141,7 +141,7 @@ button{cursor:pointer}
 [data-reveal="zoom"].pre{transform:scale(.93)}
 
 /* ---------- hero ---------- */
-.hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(20px,4vw,56px);align-items:center;padding:clamp(120px,16vh,170px) 0 clamp(40px,7vh,88px) var(--lane)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(20px,4vw,56px);align-items:center;padding:clamp(120px,16vh,170px) 0 clamp(40px,7vh,88px) var(--lane)}
 .name{font-family:var(--font-display);font-size:clamp(2.9rem,7.3vw,6.1rem);line-height:.92;letter-spacing:-.012em;font-variation-settings:"wdth" 100,"wght" 800}
 .name-line{display:block;white-space:nowrap}
 .name .ch{display:inline-block;font-variation-settings:"wdth" 100,"wght" 800;transition:font-variation-settings .35s var(--ease),color .35s;animation:settle 1.05s var(--ease) backwards;animation-delay:calc(var(--i) * 55ms + 120ms)}
@@ -155,35 +155,20 @@ button{cursor:pointer}
 .hero-copy > .role{animation-delay:.55s}.hero-copy > .intro{animation-delay:.68s}.hero-copy > .cta{animation-delay:.8s}.hero-copy > .where{animation-delay:.92s}
 @keyframes rise{from{opacity:0;transform:translateY(16px)}}
 
-.board{display:grid;justify-items:center;gap:6px;min-width:0}
-.stack-scene{--size:min(58vw,310px);width:100%;height:calc(var(--size) * 1.86);display:grid;place-items:center;perspective:1500px}
-.stack-float{transform-style:preserve-3d;animation:float 7s ease-in-out infinite alternate}
-@keyframes float{from{transform:translate3d(0,-7px,0)}to{transform:translate3d(0,9px,0)}}
-.stack{--tone:var(--signal);--gap:3px;position:relative;width:var(--size);height:var(--size);transform-style:preserve-3d;transform:rotateX(calc(56deg + var(--tx,0deg))) rotateZ(calc(-42deg + var(--tz,0deg)));transition:transform .45s ease-out}
-.stack[data-tone="warm"]{--tone:var(--copper)}
-.stack.open{--gap:calc(var(--size) * var(--gk,.17) * var(--sk,1))}
-.layer,.dims{position:absolute;transition:transform 1s var(--ease)}
-.layer{inset:0;border-radius:10px;border:1px solid var(--tone);background:linear-gradient(135deg,rgba(79,224,196,.13),rgba(8,30,37,.5) 55%,rgba(242,164,92,.11));box-shadow:inset 0 0 26px rgba(79,224,196,.07);transform:translateZ(calc((var(--i) - (var(--n) - 1) / 2) * var(--gap)))}
-.layer.top{background:linear-gradient(135deg,rgba(79,224,196,.2),rgba(8,30,37,.8) 50%,rgba(242,164,92,.18));box-shadow:0 0 40px rgba(79,224,196,.16)}
-.dims{inset:-14%;transform:translateZ(calc((0 - (var(--n) - 1) / 2) * var(--gap) - 1px))}
-.layer svg,.dims svg{display:block;width:100%;height:100%;overflow:visible}
-.layer .tr{fill:none;stroke:var(--tone);stroke-width:.9;stroke-linecap:round;stroke-linejoin:round;opacity:.78}
-.layer .pad{fill:var(--gold)}
-.layer .hole{fill:var(--mask);stroke:var(--tone);stroke-width:.7}
-.layer .blk{fill:rgba(5,21,26,.86);stroke:var(--gold);stroke-width:.6}
-.layer .bl{fill:var(--silk);font:600 4.4px var(--font-display)}
-.layer .ln{fill:var(--silk);font:700 5px var(--font-display);opacity:.9}
-.dims line,.dims path{stroke:var(--fr4);stroke-width:.5;fill:none}
-.dims text{fill:var(--silk);font:600 5px var(--font-display)}
-.seg{display:inline-flex;gap:4px;padding:4px;border-radius:13px}
-.seg button{padding:9px 14px;border:0;border-radius:9px;background:transparent;color:var(--fr4);font-size:.88rem;font-weight:500;transition:background .25s,color .25s}
-.seg button[aria-pressed="true"]{background:rgba(234,242,239,.12);color:var(--silk);box-shadow:inset 0 0 0 1px rgba(79,224,196,.4)}
-.board-note{max-width:38ch;text-align:center;color:var(--fr4);font-size:.88rem;line-height:1.5;margin-top:8px}
-.board-note b{color:var(--silk);font-weight:600}
+.board{display:grid;gap:12px;min-width:0}
+/* hero PCB: the board's real 3D model on a transparent canvas; its parts move into place as you scroll */
+.hero-pin{position:relative}
+.hero-pin.pinned .hero{position:sticky;top:var(--pin-top,0px)}
+.pin-space{height:var(--pin-len,0px)}
+.pcb-anim{margin:0}
+.pcb-stage{position:relative;width:100%;aspect-ratio:5/4}
+.pcb-stage canvas{position:absolute;inset:0;display:block;width:100%;height:100%;opacity:0;transition:opacity .8s var(--ease)}
+.pcb-stage.ready canvas{opacity:1}
+.pcb-stage.failed{display:none}
+@media (prefers-reduced-motion:reduce){.pcb-stage canvas{transition:none}}
 @media (max-width:899px){
   .hero{grid-template-columns:1fr;padding-top:112px}
-  .board{margin-top:8px;overflow:hidden;overflow:clip}
-  .stack-scene{--size:min(47vw,290px)}
+  .board{margin-top:8px}
 }
 
 /* ---------- sections ---------- */
@@ -242,74 +227,28 @@ h4{font-family:var(--font-display);font-variation-settings:"wdth" 104,"wght" 600
 .xp-org{color:var(--gold);font-weight:500}
 .xp-tag{margin-left:auto;padding:6px 12px;border-radius:99px;border:1px solid rgba(242,164,92,.5);color:var(--gold);font-size:.85rem;font-weight:500}
 .xp-sum{margin-top:16px;max-width:66ch;color:#d6e2de;font-size:1.05rem}
-.xp-projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:16px;margin-top:22px}
-.xp-proj{display:grid;align-content:start;gap:14px;padding:20px;border-radius:var(--r-md);background:rgba(5,21,26,.5);border:1px solid var(--line);transition:border-color .3s,transform .35s var(--ease)}
-.xp-proj:hover{border-color:rgba(242,164,92,.5);transform:translateY(-4px)}
-.xp-link{justify-self:start;color:var(--signal);font-weight:500;text-underline-offset:4px}
 .xp > .pts{margin-top:18px}
+.xp-skills{margin-top:18px}
 .xp-cert{justify-self:start;margin-top:20px}
 
-/* projects */
+/* engineering capabilities */
+.caps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.cap-item{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:14px;font-weight:500;line-height:1.3;transition:transform .5s var(--ease),opacity .8s var(--ease),border-color .3s;transition-delay:var(--d,0ms)}
+.cap-item:hover{transform:translateY(-4px);border-color:rgba(79,224,196,.45)}
+.cap-ico{display:grid;place-items:center;width:44px;height:44px;flex:none;border-radius:12px;background:rgba(5,21,26,.6);border:1px solid var(--line);transition:border-color .3s,box-shadow .3s}
+.cap-ico .ico{width:24px;height:24px;stroke:url(#g-ct)}
+.cap-item:hover .cap-ico{border-color:rgba(79,224,196,.55);box-shadow:0 0 18px rgba(79,224,196,.3)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* academic project */
 .proj{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3.4vw,44px);align-items:center;padding:clamp(16px,2.6vw,30px);border-radius:var(--r-lg);scroll-margin-top:100px}
 .proj + .proj{margin-top:28px}
-.proj.flip .proj-vis{order:2}
 .proj-vis{position:relative;border-radius:var(--r-md);background:rgba(5,21,26,.6);border:1px solid var(--line);padding:clamp(12px,2vw,20px);overflow:hidden}
 .proj-vis svg{display:block;width:100%;height:auto}
 .proj-body{display:grid;gap:14px;align-content:start}
 .proj-meta{color:var(--gold);font-weight:500;margin-top:-8px}
 .fig-note{color:var(--fr4);font-size:.84rem;margin-top:10px}
 @media (max-width:860px){.proj{grid-template-columns:1fr}.proj.flip .proj-vis{order:0}}
-
-.demo text{font-family:var(--font-body);fill:var(--fr4);font-size:12.5px}
-.demo-legend{display:grid;grid-template-columns:23.8% 27.8% 25.9% 22.5%;margin-top:6px;text-align:center;font-size:clamp(.68rem,1.5vw,.84rem);font-weight:500;line-height:1.25}
-.demo .st{fill:none;stroke:var(--fr4);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.demo .link{fill:none;stroke:var(--fr4);stroke-width:1.2;stroke-dasharray:3 6;opacity:.55}
-.demo .arc{fill:none;stroke:var(--signal);stroke-width:1.6;stroke-linecap:round;opacity:.25}
-.demo.tx .arc{animation:blink .7s ease-in-out infinite}
-.demo.tx .arc:nth-of-type(2){animation-delay:.12s}.demo.tx .arc:nth-of-type(3){animation-delay:.24s}
-@keyframes blink{50%{opacity:1}}
-.demo .pcbbox{fill:var(--mask-2);stroke:var(--signal);stroke-width:1.4}
-.demo .part{fill:var(--mask);stroke:var(--gold);stroke-width:1}
-.demo .bubble{fill:var(--copper);transition:fill .3s}
-.demo .bubble-t{fill:#06181d;font-weight:700;font-size:13px}
-.demo .dot{fill:#fff;opacity:0;filter:drop-shadow(0 0 6px var(--signal))}
-.demo .led{fill:#31494a;transition:fill .3s,filter .3s}
-.demo .wire{fill:none;stroke:#3d5a5b;stroke-width:2.2;stroke-linecap:round;transition:stroke .3s}
-.demo .lever{stroke:var(--gold);stroke-width:2.2;stroke-linecap:round;transform-box:view-box;transform-origin:396px 108px;transform:rotate(-24deg);transition:transform .35s var(--ease)}
-.demo .rotor{transform-box:view-box;transform-origin:500px 118px}
-.demo .water{fill:var(--signal);opacity:0}
-.demo[data-state="on"] .led{fill:var(--signal);filter:drop-shadow(0 0 6px var(--signal))}
-.demo[data-state="on"] .wire{stroke:var(--signal)}
-.demo[data-state="on"] .lever{transform:rotate(0deg)}
-.demo[data-state="on"] .rotor{animation:spin .9s linear infinite}
-.demo[data-state="on"] .water{animation:drip 1s linear infinite}
-.demo[data-state="on"] .water:nth-of-type(2){animation-delay:.33s}.demo[data-state="on"] .water:nth-of-type(3){animation-delay:.66s}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes drip{0%{opacity:0;transform:translateY(0)}20%{opacity:1}100%{opacity:0;transform:translateY(42px)}}
-.demo-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px}
-.demo-status{margin-left:auto;display:inline-flex;align-items:center;gap:8px;font-weight:500;font-size:.92rem}
-.demo-status::before{content:"";width:9px;height:9px;border-radius:50%;background:#31494a}
-.demo-status.on::before{background:var(--signal);box-shadow:0 0 10px var(--signal)}
-
-.boards{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,3vw,28px);align-items:start}
-.pcb{--tone:var(--signal)}
-.pcb.hv{--tone:var(--copper)}
-.pcb-out{position:relative;aspect-ratio:1;display:grid;gap:5%;padding:13%;border-radius:10px;border:1.5px solid var(--tone);background:linear-gradient(135deg,rgba(234,242,239,.07),rgba(5,21,26,.35))}
-.pcb.hv .pcb-out{grid-template:"a" 1fr "b" 1fr "c" 1fr / 1fr}
-.pcb.ctl .pcb-out{grid-template:"a a" 1fr "b c" 1fr "d d" 1fr / 1fr 1fr}
-.fb{display:grid;place-items:center;text-align:center;padding:3px;border:1px solid var(--tone);border-radius:6px;background:rgba(5,21,26,.6);font-size:clamp(.62rem,1.3vw,.78rem);line-height:1.15;min-width:0}
-.mh{position:absolute;width:7%;aspect-ratio:1;border-radius:50%;border:1.5px solid var(--tone)}
-.mh:nth-of-type(1){left:4%;top:4%}.mh:nth-of-type(2){right:4%;top:4%}.mh:nth-of-type(3){left:4%;bottom:4%}.mh:nth-of-type(4){right:4%;bottom:4%}
-.dim{display:flex;align-items:center;gap:8px;margin-top:8px;color:var(--fr4);font-size:.78rem;font-variant-numeric:tabular-nums}
-.dim::before,.dim::after{content:"";flex:1;height:7px;border:solid currentColor;border-width:0 0 0 1px;background:linear-gradient(currentColor,currentColor) center/100% 1px no-repeat;opacity:.7}
-.dim::after{border-width:0 1px 0 0}
-.lyr{display:grid;gap:3px;margin-top:10px}
-.lyr i{height:5px;border-radius:2px;background:linear-gradient(90deg,var(--tone),transparent);transform-origin:left}
-.in .lyr i{animation:lyr .6s var(--ease) backwards;animation-delay:calc(var(--k) * 90ms + 300ms)}
-@keyframes lyr{from{transform:scaleX(0)}}
-.pcb figcaption{margin-top:10px;font-size:.9rem;line-height:1.35}
-.pcb figcaption span{display:block;color:var(--fr4);font-size:.84rem}
-
 .ant .sub{fill:rgba(79,224,196,.08);stroke:rgba(79,224,196,.32);stroke-width:1.2}
 .ant .feed{stroke:var(--gold);stroke-width:5;stroke-linecap:round}
 .ant .ring{fill:none;stroke:var(--signal);stroke-width:1.5;transform-box:fill-box;transform-origin:center;opacity:0;animation:ring 3.6s linear infinite}
@@ -405,6 +344,23 @@ html.cv-lock{overflow:hidden}
   .cv-pages{gap:12px;padding:12px}
 }
 
+/* extracurricular activities: one box, three groups */
+.extra{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-radius:var(--r-lg);overflow:hidden}
+.extra::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--grad);opacity:.8}
+.extra-group{position:relative;display:flex;flex-direction:column;gap:16px;padding:clamp(22px,3vw,32px);transition:background .35s}
+.extra-group + .extra-group::before{content:"";position:absolute;left:0;top:14%;bottom:14%;width:1px;background:linear-gradient(180deg,transparent,rgba(234,242,239,.18) 20%,rgba(234,242,239,.18) 80%,transparent)}
+.extra-group:hover{background:linear-gradient(180deg,rgba(79,224,196,.06),transparent 70%)}
+.extra-top{display:flex;align-items:center;gap:14px}
+.extra-ico{display:grid;place-items:center;width:48px;height:48px;flex:none;border-radius:13px;background:rgba(5,21,26,.6);border:1px solid var(--line);transition:border-color .3s,box-shadow .3s,transform .35s var(--ease)}
+.extra-ico .ico{width:26px;height:26px;stroke:url(#g-ct)}
+.extra-group:hover .extra-ico{transform:translateY(-2px);border-color:rgba(79,224,196,.55);box-shadow:0 0 18px rgba(79,224,196,.3)}
+.extra-tool{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:14px;border-top:1px solid var(--line);font-weight:500}
+.extra-tool span{color:var(--fr4);font-size:.85rem;font-weight:400}
+@media (max-width:900px){
+  .extra{grid-template-columns:1fr}
+  .extra-group + .extra-group::before{left:7%;right:7%;top:0;bottom:auto;width:auto;height:1px;background:linear-gradient(90deg,transparent,rgba(234,242,239,.18) 20%,rgba(234,242,239,.18) 80%,transparent)}
+}
+
 /* contact */
 .contact{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(22px,4vw,48px);align-items:start}
 .reach{display:grid;gap:10px}
@@ -443,10 +399,10 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
 .toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
 
 @media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;animation-delay:0ms!important;transition-duration:.01ms!important;transition-delay:0ms!important}
   .ant .ring{opacity:.35;transform:scale(.6)}
   .ant .ring:nth-of-type(2){transform:scale(.38)}.ant .ring:nth-of-type(3){transform:scale(.82)}
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;animation-delay:0ms!important;transition-duration:.01ms!important;transition-delay:0ms!important}
 }
 </style>
 </head>
@@ -481,6 +437,15 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
   <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/></symbol>
   <symbol id="i-case" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18"/></symbol>
   <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3L10 14M21 3l-7 18-4-7-7-4 18-7z"/></symbol>
+  <symbol id="i-schem" viewBox="0 0 24 24"><path d="M2 12h4l2-5 3 10 3-10 3 10 2-5h3"/></symbol>
+  <symbol id="i-stackup" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="4" rx="1"/><rect x="3" y="10" width="18" height="4" rx="1"/><rect x="3" y="16" width="18" height="4" rx="1"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.8-4.8"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M2 12h4l2-6 4 12 3-9 2 3h5"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 8h4M3 12h4M3 16h4M17 8h4M17 12h4M17 16h4"/><path d="M10.5 9.5l3.5 2.5-3.5 2.5z"/></symbol>
+  <symbol id="i-photo" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-cine" viewBox="0 0 24 24"><circle cx="6.5" cy="6" r="2.5"/><circle cx="13" cy="6" r="2.5"/><rect x="3" y="10" width="13" height="9" rx="1.5"/><path d="M16 13l5-3v9l-5-3"/></symbol>
   <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-zin" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5M11 8v6M8 11h6"/></symbol>
   <symbol id="i-zout" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5M8 11h6"/></symbol>
@@ -508,9 +473,11 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
       <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#academic">Academic</a>
       <a href="#education">Education</a>
       <a href="#certifications">Certifications</a>
+      <a href="#extracurricular">Activities</a>
       <a href="#contact">Contact</a>
     </nav>
     <a class="btn btn-primary btn-sm nav-cta" href="assets/Adwin_Jannes_Resume.pdf" download="Adwin_Jannes_Resume.pdf" data-resume>
@@ -527,6 +494,7 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
   <div class="rail" id="rail" aria-hidden="true"><i class="rail-fill"></i><i class="rail-head"></i></div>
 
   <!-- HERO -->
+  <div class="hero-pin" id="hero-pin">
   <section class="hero" id="hero">
     <div class="hero-copy">
       <h1 class="name" id="name" aria-label="Adwin Jannes T">
@@ -534,9 +502,9 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
         <span class="name-line" aria-hidden="true">Jannes T</span>
       </h1>
       <p class="role">Embedded Systems Engineer</p>
-      <p class="intro">I design embedded hardware and electronics for IoT products and small satellite systems, from a SIM-based borewell motor controller to multi-layer boards for a 1U CubeSat.</p>
+      <p class="intro">I design embedded hardware and electronics for IoT products and small satellite systems, from schematic and component selection through multilayer PCB layout and BOM preparation.</p>
       <div class="cta">
-        <a class="btn btn-primary" href="#projects">View projects</a>
+        <a class="btn btn-primary" href="#experience">View experience</a>
         <a class="btn btn-glass" href="assets/Adwin_Jannes_Resume.pdf" download="Adwin_Jannes_Resume.pdf" data-resume>
           <svg class="ico" aria-hidden="true"><use href="#i-down"/></svg>Download resume
         </a>
@@ -546,16 +514,13 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
     </div>
 
     <div class="board">
-      <div class="stack-scene" id="scene">
-        <div class="stack-float"><div class="stack" id="stack" role="img" aria-label="Exploded view of a multi-layer circuit board for a 1U CubeSat"></div></div>
-      </div>
-      <div class="seg glass" role="group" aria-label="Choose a CubeSat board">
-        <button type="button" data-board="control" aria-pressed="true">Control board, 6 layers</button>
-        <button type="button" data-board="hv" aria-pressed="false">HV board, 4 layers</button>
-      </div>
-      <p class="board-note" id="board-note"></p>
+      <figure class="pcb-anim" id="pcb-anim">
+        <div class="pcb-stage" id="pcb-stage" data-model="assets/models/pcb-board.js" role="img" aria-label="3D model of a circuit board. Its parts start separated above and below the board and move into place as you scroll."></div>
+      </figure>
     </div>
   </section>
+  <div class="pin-space" aria-hidden="true"></div>
+  </div>
 
   <!-- ABOUT -->
   <section class="sec" id="about">
@@ -656,7 +621,7 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
   <!-- EXPERIENCE -->
   <section class="sec" id="experience">
     <header class="sec-head" data-reveal>
-      <h2><span class="via"></span>Work experience</h2>
+      <h2><span class="via"></span>Professional experience</h2>
     </header>
 
     <article class="xp glass" data-reveal>
@@ -666,24 +631,14 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
         <div><h3>Embedded Systems Engineer</h3><p class="xp-org">Spacemancraft Pvt Ltd</p></div>
       </header>
       <p class="xp-sum">Working on embedded hardware and electronics for IoT products and small satellite systems.</p>
-      <div class="xp-projects">
-        <section class="xp-proj">
-          <h4>Project 1: IoT Motor Controller</h4>
-          <ul class="pts">
-            <li>Developing a SIM-based controller that switches a borewell motor ON/OFF remotely from anywhere through call and SMS, comparable to commercial GSM pump controllers.</li>
-            <li>Own the system architecture, component selection (SIM800L 2G modem), KiCad schematic and PCB design, and the bill of materials (BOM).</li>
-          </ul>
-          <a class="xp-link" href="#project-motor">See it in action</a>
-        </section>
-        <section class="xp-proj">
-          <h4>Project 2: 1U CubeSat Electronics Boards</h4>
-          <ul class="pts">
-            <li>Designing two PCBs for a 1U CubeSat in KiCad, both on a 50 × 50 mm outline: a 4-layer high-voltage board (HV generation, monitoring and protection) and a 6-layer control board (MCU/FPGA control, motor drive, sensors and communications).</li>
-            <li>Balancing board size, layer count, routing feasibility and protection requirements for a space-constrained, reliability-critical design.</li>
-          </ul>
-          <a class="xp-link" href="#project-cubesat">See the two boards</a>
-        </section>
-      </div>
+      <ul class="pts">
+        <li>Define system architecture and select electronic components for embedded control hardware.</li>
+        <li>Create schematics and multilayer PCB layouts in KiCad.</li>
+        <li>Design board-level power architecture and integrate microcontrollers and driver ICs into compact, space-constrained designs.</li>
+        <li>Prepare bills of materials (BOM) for hardware builds.</li>
+      </ul>
+      <h4 class="vh">Skills used</h4>
+      <ul class="chips xp-skills"><li class="chip">KiCad</li><li class="chip">Schematic design</li><li class="chip">Multilayer PCB layout</li><li class="chip">Component selection</li><li class="chip">BOM preparation</li><li class="chip">Power architecture</li><li class="chip">Microcontroller integration</li></ul>
     </article>
 
     <article class="xp glass" data-reveal>
@@ -701,112 +656,29 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
     </article>
   </section>
 
-  <!-- PROJECTS -->
-  <section class="sec" id="projects">
+  <!-- ENGINEERING CAPABILITIES -->
+  <section class="sec" id="capabilities">
     <header class="sec-head" data-reveal>
-      <h2><span class="via"></span>Projects</h2>
-      <p class="sec-sub">Two builds in progress at Spacemancraft and one academic design. The first one is live: send it a command.</p>
+      <h2><span class="via"></span>Engineering capabilities</h2>
     </header>
+    <ul class="caps" data-stagger>
+      <li class="cap-item glass" data-reveal><span class="cap-ico"><svg class="ico" aria-hidden="true"><use href="#i-layers"/></svg></span>PCB Design &amp; Development</li>
+      <li class="cap-item glass" data-reveal><span class="cap-ico"><svg class="ico" aria-hidden="true"><use href="#i-cpu"/></svg></span>Embedded Hardware Engineering</li>
+      <li class="cap-item glass" data-reveal><span class="cap-ico"><svg class="ico" aria-hidden="true"><use href="#i-schem"/></svg></span>Schematic Design</li>
+      <li class="cap-item glass" data-reveal><span class="cap-ico"><svg class="ico" aria-hidden="true"><use href="#i-stackup"/></svg></span>Multilayer PCB Layout</li>
+      <li class="cap-item glass" data-reveal><span class="cap-ico"><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg></span>Electronic Component Selection</li>
+      <li class="cap-item glass" data-reveal><span class="cap-ico"><svg class="ico" aria-hidden="true"><use href="#i-list"/></svg></span>BOM Preparation</li>
+      <li class="cap-item glass" data-reveal><span class="cap-ico"><svg class="ico" aria-hidden="true"><use href="#i-mcu"/></svg></span>Microcontroller Integration</li>
+      <li class="cap-item glass" data-reveal><span class="cap-ico"><svg class="ico" aria-hidden="true"><use href="#i-pulse"/></svg></span>Hardware Testing &amp; Debugging</li>
+      <li class="cap-item glass" data-reveal><span class="cap-ico"><svg class="ico" aria-hidden="true"><use href="#i-doc"/></svg></span>Technical Documentation</li>
+    </ul>
+  </section>
 
-    <article class="proj glass" id="project-motor" data-reveal>
-      <div class="proj-vis">
-        <svg class="demo" id="demo" data-state="off" viewBox="0 10 560 186" role="img" aria-label="A phone sends a command over the GSM network to the controller, which switches the borewell motor">
-          <path class="link" id="demo-path" d="M57 58 C 90 8, 180 8, 208 66 C 240 10, 300 10, 322 44"/>
-          <!-- phone -->
-          <rect class="st" x="28" y="62" width="58" height="108" rx="10"/>
-          <rect x="34" y="74" width="46" height="78" rx="4" fill="rgba(234,242,239,.06)"/>
-          <rect class="bubble" x="38" y="103" width="38" height="20" rx="10"/>
-          <text class="bubble-t" id="demo-bubble" x="57" y="117.6" text-anchor="middle">ON</text>
-          <path class="st" d="M50 162h14"/>
-          <!-- tower -->
-          <g>
-            <path class="arc" d="M200 68a12 12 0 0 1 20 0"/><path class="arc" d="M194 62a20 20 0 0 1 32 0"/><path class="arc" d="M188 56a28 28 0 0 1 44 0"/>
-          </g>
-          <path class="st" d="M196 170l14-92 14 92M200 144h20M203.5 120h13M207 98h6"/>
-          <circle cx="210" cy="74" r="3.5" fill="var(--signal)"/>
-          <!-- controller -->
-          <path class="st" d="M322 78V50"/><circle cx="322" cy="47" r="3.2" fill="var(--gold)"/>
-          <rect class="pcbbox" x="304" y="78" width="128" height="92" rx="8"/>
-          <rect class="part" x="316" y="94" width="62" height="28" rx="3"/>
-          <text x="347" y="112" text-anchor="middle" style="fill:var(--silk);font-weight:600">SIM800L</text>
-          <circle cx="396" cy="108" r="2.6" fill="var(--gold)"/><circle cx="420" cy="108" r="2.6" fill="var(--gold)"/>
-          <path class="lever" d="M396 108h23"/>
-          <circle class="led" cx="322" cy="148" r="5"/>
-          <!-- motor -->
-          <path class="wire" d="M423 108H452V118H470"/>
-          <path d="M500 148V186" stroke="#3d5a5b" stroke-width="8" stroke-linecap="round"/>
-          <path d="M462 172H548" stroke="var(--fr4)" stroke-width="1" stroke-dasharray="4 5" opacity=".6"/>
-          <path class="st" d="M527 104H546V112" style="stroke-width:5;stroke:#3d5a5b"/>
-          <g><circle class="water" cx="546" cy="120" r="2.4"/><circle class="water" cx="546" cy="120" r="2.4"/><circle class="water" cx="546" cy="120" r="2.4"/></g>
-          <circle cx="500" cy="118" r="30" fill="var(--mask-2)" stroke="var(--copper)" stroke-width="1.6"/>
-          <g class="rotor" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"><path d="M500 118V98M500 118l17.3 10M500 118l-17.3 10"/><circle cx="500" cy="118" r="4.5" fill="var(--gold)" stroke="none"/></g>
-          <circle class="dot" id="demo-dot" r="5" cx="57" cy="58"/>
-        </svg>
-        <ol class="demo-legend" aria-label="Signal path, in order">
-          <li>Phone</li><li>GSM network</li><li>Controller</li><li>Borewell motor</li>
-        </ol>
-        <div class="demo-bar">
-          <button class="btn btn-primary btn-sm" type="button" id="demo-on">Send ON by SMS</button>
-          <button class="btn btn-glass btn-sm" type="button" id="demo-off">Send OFF by SMS</button>
-          <span class="demo-status" id="demo-status" role="status" aria-live="polite">Motor stopped</span>
-        </div>
-        <p class="fig-note">A sketch of the idea, not the production hardware.</p>
-      </div>
-      <div class="proj-body">
-        <h3>IoT Motor Controller</h3>
-        <p class="proj-meta">Spacemancraft Pvt Ltd</p>
-        <ul class="pts">
-          <li>A SIM-based controller that switches a borewell motor ON/OFF remotely from anywhere through call and SMS, comparable to commercial GSM pump controllers.</li>
-          <li>I own the system architecture, component selection, KiCad schematic and PCB design, and the bill of materials.</li>
-        </ul>
-        <h4 class="vh">Technologies</h4>
-        <ul class="chips"><li class="chip">SIM800L 2G modem</li><li class="chip">Call and SMS control</li><li class="chip">KiCad</li><li class="chip">Schematic and PCB design</li><li class="chip">BOM</li></ul>
-      </div>
-    </article>
-
-    <article class="proj glass flip" id="project-cubesat" data-reveal>
-      <div class="proj-vis">
-        <div class="boards">
-          <figure class="pcb hv">
-            <div class="pcb-out">
-              <i class="mh"></i><i class="mh"></i><i class="mh"></i><i class="mh"></i>
-              <span class="fb" style="grid-area:a">HV generation</span>
-              <span class="fb" style="grid-area:b">Monitoring</span>
-              <span class="fb" style="grid-area:c">Protection</span>
-            </div>
-            <div class="dim">50 mm</div>
-            <div class="lyr" aria-hidden="true"><i style="--k:0"></i><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i></div>
-            <figcaption>High-voltage board<span>4 layers</span></figcaption>
-          </figure>
-          <figure class="pcb ctl">
-            <div class="pcb-out">
-              <i class="mh"></i><i class="mh"></i><i class="mh"></i><i class="mh"></i>
-              <span class="fb" style="grid-area:a">MCU/FPGA control</span>
-              <span class="fb" style="grid-area:b">Motor drive</span>
-              <span class="fb" style="grid-area:c">Sensors</span>
-              <span class="fb" style="grid-area:d">Communications</span>
-            </div>
-            <div class="dim">50 mm</div>
-            <div class="lyr" aria-hidden="true"><i style="--k:0"></i><i style="--k:1"></i><i style="--k:2"></i><i style="--k:3"></i><i style="--k:4"></i><i style="--k:5"></i></div>
-            <figcaption>Control board<span>6 layers</span></figcaption>
-          </figure>
-        </div>
-        <p class="fig-note">Block plans of what each board carries, not the routed layouts.</p>
-      </div>
-      <div class="proj-body">
-        <h3>1U CubeSat Electronics Boards</h3>
-        <p class="proj-meta">Spacemancraft Pvt Ltd</p>
-        <ul class="pts">
-          <li>Two PCBs for a 1U CubeSat, designed in KiCad, both on a 50 × 50 mm outline.</li>
-          <li>A 4-layer high-voltage board for HV generation, monitoring and protection.</li>
-          <li>A 6-layer control board for MCU/FPGA control, motor drive, sensors and communications.</li>
-          <li>Balancing board size, layer count, routing feasibility and protection requirements for a space-constrained, reliability-critical design.</li>
-        </ul>
-        <h4 class="vh">Technologies</h4>
-        <ul class="chips"><li class="chip">KiCad</li><li class="chip">4-layer HV board</li><li class="chip">6-layer control board</li><li class="chip">MCU/FPGA</li><li class="chip">50 × 50 mm outline</li></ul>
-      </div>
-    </article>
-
+  <!-- ACADEMIC PROJECT -->
+  <section class="sec" id="academic">
+    <header class="sec-head" data-reveal>
+      <h2><span class="via"></span>Academic project</h2>
+    </header>
     <article class="proj glass" id="project-antenna" data-reveal>
       <div class="proj-vis">
         <svg class="ant" viewBox="50 18 380 206" role="img" aria-label="Two antenna elements on an FR4 substrate radiating outward">
@@ -900,6 +772,42 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
         <button class="cert-open" type="button" data-cert="ai-tcsion" aria-haspopup="dialog" aria-label="View certificate: AI for Real World Application"></button>
       </li>
     </ul>
+  </section>
+
+  <!-- EXTRACURRICULAR ACTIVITIES -->
+  <section class="sec" id="extracurricular">
+    <header class="sec-head" data-reveal>
+      <h2><span class="via"></span>Extracurricular activities</h2>
+      <p class="sec-sub">Beyond engineering, I enjoy creative media, visual storytelling and photography.</p>
+    </header>
+    <div class="extra glass" data-reveal>
+      <section class="extra-group" aria-labelledby="ex-video">
+        <div class="extra-top"><span class="extra-ico"><svg class="ico" aria-hidden="true"><use href="#i-film"/></svg></span><h3 id="ex-video">Video Editing</h3></div>
+        <ul class="pts">
+          <li>Video editing and post-production.</li>
+          <li>Storytelling and transitions.</li>
+          <li>Visual effects and professional presentation.</li>
+        </ul>
+        <p class="extra-tool"><span>Tool</span>CapCut</p>
+      </section>
+      <section class="extra-group" aria-labelledby="ex-photo">
+        <div class="extra-top"><span class="extra-ico"><svg class="ico" aria-hidden="true"><use href="#i-photo"/></svg></span><h3 id="ex-photo">Photo Editing</h3></div>
+        <ul class="pts">
+          <li>Image enhancement and retouching.</li>
+          <li>Colour correction and visual composition.</li>
+        </ul>
+        <p class="extra-tool"><span>Tool</span>Adobe Lightroom</p>
+      </section>
+      <section class="extra-group" aria-labelledby="ex-cine">
+        <div class="extra-top"><span class="extra-ico"><svg class="ico" aria-hidden="true"><use href="#i-cine"/></svg></span><h3 id="ex-cine">Cinematography</h3></div>
+        <ul class="pts">
+          <li>Camera operations.</li>
+          <li>Creative framing and composition.</li>
+          <li>Lighting techniques.</li>
+          <li>Visual storytelling.</li>
+        </ul>
+      </section>
+    </div>
   </section>
 
   <!-- CONTACT -->
@@ -1162,67 +1070,253 @@ function initTraces() {
   start();
 }
 
-/* ---------- hero: exploded PCB stack ---------- */
-function initStack() {
-  const stack = $('#stack'), scene = $('#scene'), note = $('#board-note'); if (!stack) return;
-  const boards = {
-    control: { n: 6, gk: .17, tone: 'cool', title: 'Control board',
-      text: 'MCU/FPGA control, motor drive, sensors and communications.',
-      blocks: [['MCU / FPGA', 33, 13, 34, 30], ['Motor drive', 9, 54, 32, 15], ['Sensors', 58, 50, 30, 14], ['Communications', 44, 72, 44, 14]] },
-    hv: { n: 4, gk: .25, tone: 'warm', title: 'High-voltage board',
-      text: 'HV generation, monitoring and protection.',
-      blocks: [['HV generation', 11, 13, 46, 28], ['Monitoring', 62, 20, 29, 14], ['Protection', 36, 56, 46, 16]] }
-  };
-  function rng(seed) {
-    return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+/* ---------- hero PCB: WebGL renderer for the board's 3D model ---------- */
+// Draws assets/models/pcb-board.js (binary glTF converted from the KiCad STEP export) on a
+// transparent canvas. Every part keeps its true STEP transform; set(e) moves the parts that
+// carry an exploded offset between the exploded view (e = 0) and the assembled board (e = 1).
+function createPcbViewer(stage, glbBase64, initial) {
+  const canvas = document.createElement('canvas');
+  canvas.setAttribute('aria-hidden', 'true');
+  const opts = { alpha: true, antialias: true, premultipliedAlpha: true, preserveDrawingBuffer: false };
+  let gl = canvas.getContext('webgl2', opts);
+  const gl2 = !!gl;
+  if (!gl) gl = canvas.getContext('webgl', opts) || canvas.getContext('experimental-webgl', opts);
+  if (!gl) throw new Error('WebGL is not available');
+  if (!gl2 && !gl.getExtension('OES_element_index_uint')) throw new Error('32-bit indices not supported');
+
+  // ---- glTF (GLB) ----
+  const raw = atob(glbBase64), bytes = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+  const dv = new DataView(bytes.buffer);
+  if (dv.getUint32(0, true) !== 0x46546C67) throw new Error('not a GLB file');
+  const jsonLen = dv.getUint32(12, true);
+  const doc = JSON.parse(new TextDecoder().decode(bytes.subarray(20, 20 + jsonLen)));
+  const binStart = 20 + jsonLen + 8;
+  function accessor(i) {
+    const a = doc.accessors[i], v = doc.bufferViews[a.bufferView];
+    const n = a.count * (a.type === 'VEC3' ? 3 : 1), off = binStart + (v.byteOffset || 0) + (a.byteOffset || 0);
+    const buf = bytes.buffer.slice(off, off + n * 4);
+    return a.componentType === 5125 ? new Uint32Array(buf) : new Float32Array(buf);
   }
-  function layerSVG(b, i) {
-    const r = rng(101 * (i + 1) + b.n * 17), top = i === b.n - 1; let s = '';
-    for (let k = 0, n = top ? 5 : 9; k < n; k++) {
-      let x = 10 + Math.floor(r() * 17) * 5, y = 10 + Math.floor(r() * 17) * 5, d = Math.floor(r() * 8), p = `M${x} ${y}`, drawn = 0;
-      for (let q = 0; q < 5 && drawn < 3; q++) {
-        const [dx, dy] = DIRS[d];
-        const mx = dx > 0 ? (92 - x) / 5 : dx < 0 ? (x - 8) / 5 : 99, my = dy > 0 ? (92 - y) / 5 : dy < 0 ? (y - 8) / 5 : 99;
-        const steps = Math.min(2 + Math.floor(r() * 5), Math.floor(Math.min(mx, my)));
-        if (steps >= 1) { x += dx * steps * 5; y += dy * steps * 5; p += `L${x} ${y}`; drawn++; }
-        d = (d + (r() < .5 ? 1 : 7)) % 8;
-      }
-      if (drawn) s += `<path class="tr" d="${p}"/><circle class="pad" cx="${x}" cy="${y}" r="1.5"/>`;
+
+  // ---- small matrix helpers (column-major 4x4) ----
+  const ident = () => { const m = new Float32Array(16); m[0] = m[5] = m[10] = m[15] = 1; return m; };
+  function mul(a, b) {
+    const o = new Float32Array(16);
+    for (let c = 0; c < 4; c++) for (let r = 0; r < 4; r++) {
+      let s = 0;
+      for (let k = 0; k < 4; k++) s += a[k * 4 + r] * b[c * 4 + k];
+      o[c * 4 + r] = s;
     }
-    if (top) for (const [label, x, y, w, h] of b.blocks) s += `<rect class="blk" x="${x}" y="${y}" width="${w}" height="${h}" rx="1.6"/><text class="bl" x="${x + w / 2}" y="${y + h / 2 + 1.6}" text-anchor="middle">${label}</text>`;
-    for (const [cx, cy] of [[6, 6], [94, 6], [6, 94], [94, 94]]) s += `<circle class="hole" cx="${cx}" cy="${cy}" r="2.3"/>`;
-    s += `<text class="ln" x="11.5" y="96">L${b.n - i}</text>`;
-    return `<div class="layer${top ? ' top' : ''}" style="--i:${i}"><svg viewBox="0 0 100 100" aria-hidden="true">${s}</svg></div>`;
+    return o;
   }
-  const dims = `<div class="dims"><svg viewBox="-14 -14 128 128" aria-hidden="true">
-    <path d="M0 102v9M100 102v9M0 108.5h100M0 108.5l3-1.6M0 108.5l3 1.6M100 108.5l-3-1.6M100 108.5l-3 1.6"/>
-    <path d="M-2 0h-9M-2 100h-9M-8.5 0v100M-8.5 0l-1.6 3M-8.5 0l1.6 3M-8.5 100l-1.6-3M-8.5 100l1.6-3"/>
-    <text x="50" y="106.5" text-anchor="middle">50 mm</text>
-    <text x="-6.2" y="50" text-anchor="middle" transform="rotate(90 -6.2 50)">50 mm</text></svg></div>`;
-  function render(name) {
-    const b = boards[name]; let html = dims;
-    for (let i = 0; i < b.n; i++) html += layerSVG(b, i);
-    stack.innerHTML = html;
-    stack.style.setProperty('--n', b.n); stack.style.setProperty('--gk', b.gk); stack.dataset.tone = b.tone;
-    note.innerHTML = `<b>${b.title}:</b> ${b.text} 50 × 50 mm outline. An illustration, not the real layout.`;
-  }
-  const open = () => requestAnimationFrame(() => requestAnimationFrame(() => stack.classList.add('open')));
-  render('control');
-  if (reduce) stack.classList.add('open'); else setTimeout(open, 500);
-  $$('[data-board]').forEach(btn => btn.addEventListener('click', () => {
-    if (btn.getAttribute('aria-pressed') === 'true') return;
-    $$('[data-board]').forEach(o => o.setAttribute('aria-pressed', String(o === btn)));
-    stack.classList.remove('open');
-    setTimeout(() => { render(btn.dataset.board); open(); }, reduce ? 0 : 520);
+  const xf = (m, x, y, z) => [m[0] * x + m[4] * y + m[8] * z + m[12], m[1] * x + m[5] * y + m[9] * z + m[13], m[2] * x + m[6] * y + m[10] * z + m[14]];
+
+  // ---- scene graph ----
+  const nodes = doc.nodes.map(n => ({
+    local: n.matrix ? new Float32Array(n.matrix) : ident(),
+    mesh: n.mesh, kids: n.children || [],
+    explode: n.extras && n.extras.explode,
+    start: n.extras && typeof n.extras.order === 'number' ? 0.35 * n.extras.order : 0.4,
+    world: null
   }));
-  if (fine && !reduce) {
-    scene.addEventListener('pointermove', e => {
-      const r = scene.getBoundingClientRect();
-      stack.style.setProperty('--tx', ((.5 - (e.clientY - r.top) / r.height) * 14).toFixed(2) + 'deg');
-      stack.style.setProperty('--tz', (((e.clientX - r.left) / r.width - .5) * 22).toFixed(2) + 'deg');
-    });
-    scene.addEventListener('pointerleave', () => { stack.style.setProperty('--tx', '0deg'); stack.style.setProperty('--tz', '0deg'); });
+  const root = doc.scenes[doc.scene || 0].nodes[0];
+  const smooth = t => t * t * (3 - 2 * t);
+  const clamp01 = t => Math.min(1, Math.max(0, t));
+  function pose(e) {
+    (function walk(i, parent) {
+      const nd = nodes[i];
+      let L = nd.local;
+      if (nd.explode) {
+        const k = 1 - smooth(clamp01((e - nd.start) / 0.6));
+        if (k > 0) {
+          const t = ident(); t[12] = nd.explode[0] * k; t[13] = nd.explode[1] * k; t[14] = nd.explode[2] * k;
+          L = mul(t, L);   // offset is in the parent's frame
+        }
+      }
+      nd.world = mul(parent, L);
+      for (const c of nd.kids) walk(c, nd.world);
+    })(root, ident());
   }
+
+  // ---- isometric view ----
+  const D = [1 / Math.sqrt(3), 1 / Math.sqrt(3), 1 / Math.sqrt(3)];          // toward the viewer
+  const R = [D[2], 0, -D[0]]; { const l = Math.hypot(R[0], R[2]); R[0] /= l; R[2] /= l; }
+  const U = [D[1] * R[2] - D[2] * R[1], D[2] * R[0] - D[0] * R[2], D[0] * R[1] - D[1] * R[0]];
+  const view = new Float32Array([R[0], U[0], D[0], 0, R[1], U[1], D[1], 0, R[2], U[2], D[2], 0, 0, 0, 0, 1]);
+
+  // view-space bounds of the model in a given pose (from each primitive's min/max box)
+  function frame(e) {
+    pose(e);
+    const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
+    nodes.forEach(nd => {
+      if (nd.mesh === undefined) return;
+      const M = mul(view, nd.world);
+      for (const p of doc.meshes[nd.mesh].primitives) {
+        const a = doc.accessors[p.attributes.POSITION];
+        for (let c = 0; c < 8; c++) {
+          const v = xf(M, c & 1 ? a.max[0] : a.min[0], c & 2 ? a.max[1] : a.min[1], c & 4 ? a.max[2] : a.min[2]);
+          for (let k = 0; k < 3; k++) { lo[k] = Math.min(lo[k], v[k]); hi[k] = Math.max(hi[k], v[k]); }
+        }
+      }
+    });
+    return { cx: (lo[0] + hi[0]) / 2, cy: (lo[1] + hi[1]) / 2, w: hi[0] - lo[0], h: hi[1] - lo[1], zlo: lo[2], zhi: hi[2] };
+  }
+  const f0 = frame(0), f1 = frame(1);
+
+  // ---- GPU resources ----
+  const VS = 'attribute vec3 aP;attribute vec3 aN;uniform mat4 uM;uniform mat4 uVP;varying vec3 vN;' +
+    'void main(){vN=(uM*vec4(aN,0.0)).xyz;gl_Position=uVP*(uM*vec4(aP,1.0));}';
+  const FS = 'precision mediump float;varying vec3 vN;uniform vec3 uC;uniform vec3 uV;' +
+    'const vec3 L1=vec3(-0.45,0.8,0.4);const vec3 L2=vec3(0.7,0.25,-0.65);' +
+    'void main(){vec3 N=normalize(vN);if(!gl_FrontFacing)N=-N;' +
+    'vec3 l1=normalize(L1),l2=normalize(L2);' +
+    'vec3 amb=mix(vec3(0.16,0.19,0.18),vec3(0.62,0.68,0.66),0.5+0.5*N.y);' +
+    'float d1=max(dot(N,l1),0.0),d2=max(dot(N,l2),0.0);' +
+    'float s=pow(max(dot(N,normalize(l1+uV)),0.0),40.0)*0.22;' +
+    'vec3 c=uC*(amb*0.75+d1*1.05+d2*0.35)+vec3(s);' +
+    'c=c/(1.0+0.12*c);gl_FragColor=vec4(pow(c,vec3(1.0/2.2)),1.0);}';
+  let prog, loc, prims;
+  function setup() {
+    const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; };
+    prog = gl.createProgram();
+    gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS));
+    gl.bindAttribLocation(prog, 0, 'aP'); gl.bindAttribLocation(prog, 1, 'aN');
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+    loc = { M: gl.getUniformLocation(prog, 'uM'), VP: gl.getUniformLocation(prog, 'uVP'),
+            C: gl.getUniformLocation(prog, 'uC'), V: gl.getUniformLocation(prog, 'uV') };
+    const buf = (target, data) => { const b = gl.createBuffer(); gl.bindBuffer(target, b); gl.bufferData(target, data, gl.STATIC_DRAW); return b; };
+    prims = doc.meshes.map(m => m.primitives.map(p => {
+      const idx = accessor(p.indices);
+      return {
+        pos: buf(gl.ARRAY_BUFFER, accessor(p.attributes.POSITION)),
+        nrm: buf(gl.ARRAY_BUFFER, accessor(p.attributes.NORMAL)),
+        idx: buf(gl.ELEMENT_ARRAY_BUFFER, idx), count: idx.length,
+        color: doc.materials[p.material].pbrMetallicRoughness.baseColorFactor.slice(0, 3)
+      };
+    }));
+    gl.enable(gl.DEPTH_TEST); gl.enable(gl.CULL_FACE);
+  }
+  setup();
+
+  let current = clamp01(initial), w = 0, h = 0, raf = 0, lost = false;
+  function draw() {
+    raf = 0;
+    if (!w || !h || lost) return;
+    const e = current;
+    pose(e);
+    const lerp = (a, b) => a + (b - a) * e;
+    const cx = lerp(f0.cx, f1.cx), cy = lerp(f0.cy, f1.cy);
+    const aspect = w / h, pad = 1.08;
+    const halfH = Math.max(lerp(f0.h, f1.h), lerp(f0.w, f1.w) / aspect) * pad / 2, halfW = halfH * aspect;
+    const zn = Math.min(f0.zlo, f1.zlo) - 10, zf = Math.max(f0.zhi, f1.zhi) + 10;
+    // orthographic projection of the view-space box [cx±halfW, cy±halfH, zn..zf]
+    const P = new Float32Array(16);
+    P[0] = 1 / halfW; P[5] = 1 / halfH; P[10] = 2 / (zf - zn); P[15] = 1;
+    P[12] = -cx / halfW; P[13] = -cy / halfH; P[14] = -(zf + zn) / (zf - zn);
+    // view space looks down -D, so larger z is nearer: map z to depth with nearer = smaller
+    P[10] = -P[10]; P[14] = (zf + zn) / (zf - zn);
+    const VP = mul(P, view);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.useProgram(prog);
+    gl.uniformMatrix4fv(loc.VP, false, VP);
+    gl.uniform3fv(loc.V, D);
+    gl.enableVertexAttribArray(0); gl.enableVertexAttribArray(1);
+    nodes.forEach(nd => {
+      if (nd.mesh === undefined) return;
+      gl.uniformMatrix4fv(loc.M, false, nd.world);
+      for (const p of prims[nd.mesh]) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, p.pos); gl.vertexAttribPointer(0, 3, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ARRAY_BUFFER, p.nrm); gl.vertexAttribPointer(1, 3, gl.FLOAT, false, 0, 0);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, p.idx);
+        gl.uniform3fv(loc.C, p.color);
+        gl.drawElements(gl.TRIANGLES, p.count, gl.UNSIGNED_INT, 0);
+      }
+    });
+  }
+  const request = () => { if (!raf) raf = requestAnimationFrame(draw); };
+
+  function resize() {
+    const r = stage.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = Math.round(r.width); h = Math.round(r.height);
+    if (!w || !h) return;
+    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    request();
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(stage);
+  else addEventListener('resize', resize);
+  canvas.addEventListener('webglcontextlost', ev => { ev.preventDefault(); lost = true; });
+  canvas.addEventListener('webglcontextrestored', () => { lost = false; setup(); request(); });
+
+  stage.appendChild(canvas);
+  resize();
+  draw();
+  return {
+    set(e) {
+      e = clamp01(e);
+      if (e === current) return;
+      current = e;
+      request();
+    }
+  };
+}
+
+/* ---------- hero PCB: the 3D model assembles as you scroll ---------- */
+// The board's real 3D model (assets/models/pcb-board.js, converted from its KiCad STEP export)
+// is drawn with WebGL (createPcbViewer above). Desktop: the hero stays pinned for a short scroll distance while the
+// parts move from the exploded view into their assembled positions; scrolling up reverses it.
+// Smaller screens: no pinning, the assembly follows the model's position on screen.
+// Reduced motion: the assembled board is shown without animation.
+function initPcb() {
+  const pin = $('#hero-pin'), hero = $('#hero'), stage = $('#pcb-stage');
+  if (!pin || !hero || !stage) return;
+  const wide = matchMedia('(min-width: 900px)');
+  let pinned = false, len = 1, ticking = false, last = -1, e = reduce ? 1 : 0, viewer = null;
+  function layout() {
+    pinned = wide.matches && !reduce;
+    pin.classList.toggle('pinned', pinned);
+    len = pinned ? Math.round(innerHeight * .75) : 0;
+    pin.style.setProperty('--pin-len', len + 'px');
+    // if the hero is taller than the window, pin it with its bottom edge visible
+    pin.style.setProperty('--pin-top', (pinned ? Math.min(0, innerHeight - hero.offsetHeight) : 0) + 'px');
+    last = -1; update();
+  }
+  function progress() {
+    if (pinned) return clamp((scrollY - (pin.getBoundingClientRect().top + scrollY)) / (len || 1), 0, 1);
+    // not pinned: start from the exploded view as soon as the model is on screen (or at the top of the page)
+    const vh = innerHeight, top = stage.getBoundingClientRect().top + scrollY;
+    return clamp((scrollY - Math.max(0, top - vh * .8)) / (vh * .45), 0, 1);
+  }
+  function update() {
+    ticking = false;
+    if (!reduce) {
+      const p = Math.round(progress() * 1000) / 1000;
+      if (p === last) return;
+      last = p;
+      e = p * p * (3 - 2 * p);              // smoothstep: gentle start and finish
+    }
+    if (viewer) viewer.set(e);
+  }
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  addEventListener('resize', layout);
+  if (wide.addEventListener) wide.addEventListener('change', layout);
+  layout();
+  // the model ships as a small classic script, so it also loads when the page is opened from a folder
+  const fail = err => { stage.classList.add('failed'); layout(); console.warn('3D board unavailable:', err); };
+  new Promise((ok, no) => {
+    if (window.PCB_BOARD_GLB) return ok();
+    const s = document.createElement('script');
+    s.src = stage.dataset.model; s.async = true;
+    s.onload = ok; s.onerror = () => no(new Error('model did not load'));
+    document.head.appendChild(s);
+  }).then(() => {
+    viewer = createPcbViewer(stage, window.PCB_BOARD_GLB, e);
+    viewer.set(e); stage.classList.add('ready'); layout();
+  }).catch(fail);
 }
 
 /* ---------- scroll reveals ---------- */
@@ -1255,9 +1349,9 @@ function initCounts() {
   });
 }
 
-/* ---------- scroll: bus rail, nav state, stack collapse ---------- */
+/* ---------- scroll: bus rail, nav state ---------- */
 function initScroll() {
-  const rail = $('#rail'), prog = $('#progress'), nav = $('#nav'), scene = $('#scene'), stack = $('#stack');
+  const rail = $('#rail'), prog = $('#progress'), nav = $('#nav');
   const links = $$('.nav-links a'), secs = links.map(a => $(a.getAttribute('href'))), vias = $$('.via');
   let ticking = false;
   function update() {
@@ -1274,7 +1368,6 @@ function initScroll() {
     secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top < vh * .46) cur = i; });
     if (max > 0 && scrollY >= max - 4) cur = secs.length - 1;
     links.forEach((a, i) => { a.classList.toggle('active', i === cur); if (i === cur) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
-    if (stack && scene) { const sr = scene.getBoundingClientRect(); stack.style.setProperty('--sk', clamp((sr.top + sr.height * .7) / (vh * .42), .1, 1).toFixed(3)); }
     nav.classList.toggle('scrolled', scrollY > 24);
   }
   const ask = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
@@ -1308,36 +1401,6 @@ function initNav() {
   btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
   panel.addEventListener('click', e => { if (e.target.closest('a')) set(false); });
   addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
-}
-
-/* ---------- project demo: SMS switches the motor ---------- */
-function initDemo() {
-  const demo = $('#demo'); if (!demo) return;
-  const path = $('#demo-path'), dot = $('#demo-dot'), bubble = $('#demo-bubble'), status = $('#demo-status');
-  let busy = false;
-  const apply = state => {
-    demo.dataset.state = state;
-    status.textContent = state === 'on' ? 'Motor running' : 'Motor stopped';
-    status.classList.toggle('on', state === 'on');
-  };
-  function send(state) {
-    if (busy) return; bubble.textContent = state === 'on' ? 'ON' : 'OFF';
-    if (reduce) { apply(state); return; }
-    busy = true; demo.classList.add('tx');
-    const L = path.getTotalLength(), t0 = performance.now(), dur = 1500;
-    dot.style.opacity = 1;
-    const fly = now => {
-      const k = clamp((now - t0) / dur, 0, 1), p = path.getPointAtLength(L * k);
-      dot.setAttribute('cx', p.x); dot.setAttribute('cy', p.y);
-      if (k < 1) requestAnimationFrame(fly);
-      else { dot.style.opacity = 0; demo.classList.remove('tx'); apply(state); busy = false; }
-    };
-    requestAnimationFrame(fly);
-  }
-  $('#demo-on').addEventListener('click', () => send('on'));
-  $('#demo-off').addEventListener('click', () => send('off'));
-  const host = demo.closest('[data-reveal]');
-  if (host && !reduce) host.addEventListener('reveal', () => setTimeout(() => send('on'), 900), { once: true });
 }
 
 /* ---------- resume download ---------- */
@@ -1656,7 +1719,7 @@ function initCopy() {
   $$('[data-copy]').forEach(b => b.addEventListener('click', () => copyText(b.dataset.copy, 'Copied.')));
 }
 
-const boot = [initName, initStack, initReveal, initCounts, initScroll, initPointer, initNav, initDemo, initResume, initCertificates, initContact, initCopy, initTraces];
+const boot = [initName, initPcb, initReveal, initCounts, initScroll, initPointer, initNav, initResume, initCertificates, initContact, initCopy, initTraces];
 boot.forEach(fn => { try { fn(); } catch (err) { console.error(fn.name, err); } });
 })();
 </script>
