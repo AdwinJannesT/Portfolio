@@ -102,7 +102,8 @@ button{cursor:pointer}
 @keyframes bg-node{0%,100%{opacity:.45;transform:scale(.8)}50%{opacity:1;transform:scale(1.25)}}
 @media (max-width:899px){.board-art{max-width:48vw;opacity:.36}}
 @media (max-width:560px){.board-art{max-width:62vw;opacity:.26}}
-@media (prefers-reduced-motion:reduce){.board-art *{animation:none!important}.board-art .sig{display:none}}
+/* reduced motion: keep the background alive but slower; the binary stream rests */
+@media (prefers-reduced-motion:reduce){.board-art .stream{animation:none}.board-art .scroll{animation-duration:16s!important}.board-art .sig path{opacity:.6}}
 #traces{position:absolute;inset:0;z-index:3;width:100%;height:100%;
   -webkit-mask-image:linear-gradient(90deg,#000,#000 12%,rgba(0,0,0,.12) 34%,rgba(0,0,0,.12) 66%,#000 88%,#000);
   mask-image:linear-gradient(90deg,#000,#000 12%,rgba(0,0,0,.12) 34%,rgba(0,0,0,.12) 66%,#000 88%,#000)}
@@ -214,7 +215,6 @@ button{cursor:pointer}
 .pcb-stage canvas{position:absolute;inset:0;display:block;width:100%;height:100%;opacity:0;transition:opacity .8s var(--ease)}
 .pcb-stage.ready canvas{opacity:1}
 .pcb-stage.failed{display:none}
-@media (prefers-reduced-motion:reduce){.pcb-stage canvas{transition:none}}
 @media (max-width:899px){
   .hero{grid-template-columns:1fr;padding-top:112px}
   .board{margin-top:8px}
@@ -447,12 +447,15 @@ footer nav a:hover{border-color:var(--signal);transform:translateY(-2px)}
 .toast{position:fixed;left:50%;bottom:24px;z-index:80;max-width:min(92vw,460px);padding:12px 18px;border-radius:12px;background:rgba(11,37,45,.96);border:1px solid rgba(79,224,196,.45);box-shadow:0 20px 50px -15px #000;font-size:.94rem;transform:translate(-50%,24px);opacity:0;visibility:hidden;transition:opacity .3s,transform .3s var(--ease),visibility .3s}
 .toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
 
+/* Reduced motion (for example Windows "Animation effects" off): animations stay on, but calmer.
+   No smooth-scroll jumps, no drifting glows, and content fades in place instead of sliding. */
 @media (prefers-reduced-motion:reduce){
-  .ant .ring{opacity:.35;transform:scale(.6)}
-  .ant .ring:nth-of-type(2){transform:scale(.38)}.ant .ring:nth-of-type(3){transform:scale(.82)}
   html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;animation-delay:0ms!important;transition-duration:.01ms!important;transition-delay:0ms!important}
+  .glow{animation:none}
+  [data-reveal].pre,[data-reveal="left"].pre,[data-reveal="right"].pre,[data-reveal="zoom"].pre{transform:none}
+  .in .chip{animation-name:fade-in}
 }
+@keyframes fade-in{from{opacity:.15}}
 </style>
 </head>
 <body>
@@ -987,7 +990,10 @@ const PDFJS = { lib: 'vendor/pdfjs/pdf.min.js', worker: 'vendor/pdfjs/pdf.worker
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+// prefers-reduced-motion is on by default on many Windows laptops (Animation effects off).
+// It makes the animations gentler here; it does not switch them off.
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const calm = reduce ? .55 : 1;   // speed factor for continuous background motion
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
 const DIRS = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]];
 let inFrame = true;
@@ -1016,7 +1022,7 @@ function initName() {
       line.appendChild(s); letters.push(s);
     }
   });
-  if (!fine || reduce) return;
+  if (!fine) return;
   const hero = $('#hero'); let centers = [], raf = 0, px = 0, py = 0;
   const measure = () => { centers = letters.map(l => { const r = l.getBoundingClientRect(); return [r.left + r.width / 2 + scrollX, r.top + r.height / 2 + scrollY]; }); };
   const paint = () => {
@@ -1099,7 +1105,7 @@ function initTraces() {
   function drawParticles(dt) {
     while (motes.length < (W < 700 ? 14 : 30)) motes.push(mote());
     for (const m of motes) {
-      m.y += m.vy * dt; m.x += m.vx * dt; m.ph += dt;
+      m.y += m.vy * calm * dt; m.x += m.vx * calm * dt; m.ph += dt;
       if (m.y < -4) { Object.assign(m, mote()); m.y = H + 4; }
       ctx.fillStyle = `rgba(53,217,242,${m.a * (.6 + .4 * Math.sin(m.ph))})`;
       dot(m.x, m.y, m.r); ctx.fill();
@@ -1116,9 +1122,9 @@ function initTraces() {
     traces = traces.filter(t => t.age < t.life);
     for (const t of traces) {
       t.age += dt;
-      if (t.grown < t.total) t.grown = Math.min(t.total, t.grown + 250 * dt);
+      if (t.grown < t.total) t.grown = Math.min(t.total, t.grown + 250 * calm * dt);
       else if (t.pulse < 0) { t.wait -= dt; if (t.wait <= 0) t.pulse = 0; }
-      else { t.pulse += dt * 230 / t.total; if (t.pulse > 1) { t.pulse = -1; t.wait = rand(1, 4); } }
+      else { t.pulse += dt * 230 * calm / t.total; if (t.pulse > 1) { t.pulse = -1; t.wait = rand(1, 4); } }
       draw(t);
     }
   }
@@ -1127,7 +1133,6 @@ function initTraces() {
     for (let k = 0; k < target(); k++) { const t = make(); t.grown = t.total; t.age = 3; draw(t); }
   }
   size();
-  if (reduce) { still(); addEventListener('resize', () => { size(); still(); }); return; }
   for (let k = 0; k < 6; k++) { const t = make(); t.age = rand(0, 3); traces.push(t); }
   addEventListener('resize', size);
   const start = () => { if (!running) { running = true; last = performance.now(); requestAnimationFrame(frame); } };
@@ -1339,14 +1344,14 @@ function createPcbViewer(stage, glbBase64, initial) {
 // is drawn with WebGL (createPcbViewer above). Desktop: the hero stays pinned for a short scroll distance while the
 // parts move from the exploded view into their assembled positions; scrolling up reverses it.
 // Smaller screens: no pinning, the assembly follows the model's position on screen.
-// Reduced motion: the assembled board is shown without animation.
+// Reduced motion: the same scroll-driven assembly (it only moves when the visitor scrolls).
 function initPcb() {
   const pin = $('#hero-pin'), hero = $('#hero'), stage = $('#pcb-stage');
   if (!pin || !hero || !stage) return;
   const wide = matchMedia('(min-width: 900px)');
-  let pinned = false, len = 1, ticking = false, last = -1, e = reduce ? 1 : 0, viewer = null;
+  let pinned = false, len = 1, ticking = false, last = -1, e = 0, viewer = null;
   function layout() {
-    pinned = wide.matches && !reduce;
+    pinned = wide.matches;
     pin.classList.toggle('pinned', pinned);
     len = pinned ? Math.round(innerHeight * .75) : 0;
     pin.style.setProperty('--pin-len', len + 'px');
@@ -1362,12 +1367,10 @@ function initPcb() {
   }
   function update() {
     ticking = false;
-    if (!reduce) {
-      const p = Math.round(progress() * 1000) / 1000;
-      if (p === last) return;
-      last = p;
-      e = p * p * (3 - 2 * p);              // smoothstep: gentle start and finish
-    }
+    const p = Math.round(progress() * 1000) / 1000;
+    if (p === last) return;
+    last = p;
+    e = p * p * (3 - 2 * p);                // smoothstep: gentle start and finish
     if (viewer) viewer.set(e);
   }
   addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
@@ -1394,7 +1397,7 @@ function initReveal() {
   $$('.chips').forEach(g => Array.from(g.children).forEach((c, i) => c.style.setProperty('--c', i)));
   const els = $$('[data-reveal]');
   const show = el => { el.classList.remove('pre'); el.classList.add('in'); el.dispatchEvent(new CustomEvent('reveal')); setTimeout(() => el.style.setProperty('--d', '0ms'), 1500); };
-  if (reduce || !('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('in')); return; }
+  if (!('IntersectionObserver' in window)) { els.forEach(el => el.classList.add('in')); return; }
   const vh = innerHeight;
   els.forEach(el => { if (el.getBoundingClientRect().top > vh * .95) el.classList.add('pre'); });
   const io = new IntersectionObserver(entries => entries.forEach(en => { if (en.isIntersecting) { show(en.target); io.unobserve(en.target); } }), { rootMargin: '0px 0px -7% 0px', threshold: .06 });
@@ -1403,7 +1406,6 @@ function initReveal() {
 
 /* ---------- count-up numerals ---------- */
 function initCounts() {
-  if (reduce) return;
   $$('[data-count]').forEach(el => {
     const end = parseFloat(el.dataset.count), dec = +el.dataset.dec || 0, host = el.closest('[data-reveal]') || el;
     host.addEventListener('reveal', () => {
@@ -1446,13 +1448,14 @@ function initScroll() {
 
 /* ---------- pointer: card tilt, glow, cursor light ---------- */
 function initPointer() {
-  if (!fine || reduce) return;
+  if (!fine) return;
+  const tilt = reduce ? 4 : 9;
   $$('[data-tilt]').forEach(el => {
     el.addEventListener('pointermove', e => {
       const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
       el.style.setProperty('--mx', (x * 100).toFixed(1) + '%'); el.style.setProperty('--my', (y * 100).toFixed(1) + '%');
       el.style.setProperty('--mxn', x.toFixed(3));
-      el.style.setProperty('--ry', ((x - .5) * 9).toFixed(2) + 'deg'); el.style.setProperty('--rx', ((.5 - y) * 9).toFixed(2) + 'deg');
+      el.style.setProperty('--ry', ((x - .5) * tilt).toFixed(2) + 'deg'); el.style.setProperty('--rx', ((.5 - y) * tilt).toFixed(2) + 'deg');
     });
     el.addEventListener('pointerleave', () => { el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); el.style.setProperty('--mxn', '0'); });
   });
