@@ -2,7 +2,7 @@
 
 My personal portfolio website showcasing my skills, projects, education, and professional journey.
 
-🌐 **Live Portfolio:** https://adwinportfolio.netlify.app/
+🌐 **Live Portfolio:** https://adwinjannest.github.io/Portfolio/
 
 ### 🛠️ Interests
 - Embedded Systems
@@ -16,7 +16,7 @@ Hosted on **Netlify**.
 
 ### 📬 Connect
 - GitHub: https://github.com/AdwinJannesT
-- Portfolio: https://adwinportfolio.netlify.app/
+- Portfolio: https://adwinjannest.github.io/Portfolio/
 
 ---
 ⭐ Thanks for visiting my portfolio!
